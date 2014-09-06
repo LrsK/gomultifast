@@ -15,7 +15,6 @@ const PATTERN_STARTING_LENGTH = 2000
 type Automaton struct {
 	root           *Node   // The root of the Aho-Corasick trie
 	all_nodes      []*Node // Pointers to all nodes
-	all_nodes_num  int     // Number of all nodes in the automaton
 	automaton_open bool    // Automaton status. If false, no more patterns can be added
 	current_node   *Node   // Pointer to current node while searching
 	position       int     // The last searched position in a chunk.
@@ -70,6 +69,13 @@ func (a *Automaton) Add(pattern *Pattern) (int, error) {
 	n.register_pattern(pattern)
 	a.total_patterns++
 	return 0, nil
+}
+
+/*
+Returns the number of nodes in the automaton
+*/
+func (a *Automaton) NumberOfNodes() int {
+	return len(a.all_nodes)
 }
 
 /*
