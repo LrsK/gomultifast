@@ -25,7 +25,7 @@ type Automaton struct {
 /*
 Type that defines the callback used to handle matches
 */
-type MatchCallback func(Match, string) int
+type MatchCallback func(Match, string, string) bool
 
 /*
 Add a Pattern (search term and identifier) to an Automaton
@@ -195,7 +195,7 @@ func (a *Automaton) collect_all_matched_patterns(node *Node) {
 
 /*
 Search through "text" in a finished automaton. If a match is found,
-a user defined callback function is called with string parameter in "param".
+a user defined callback function is called with the searched text, and string parameter in "param".
 if keep_searching is true, the search will continue to the rest of the text after a match.
 */
 func (a *Automaton) Search(text string, keep_searching bool, callback MatchCallback, param string) int {
@@ -236,10 +236,9 @@ func (a *Automaton) Search(text string, keep_searching bool, callback MatchCallb
 			 * matching because it was reported in previous node */
 			match.position = position + a.base_position
 			match.Patterns = current.matched_patterns
-			param = text
 			// Match found run callback
-			cb_res := callback(match, param)
-			if cb_res != 0 {
+			cb_res := callback(match, text, param)
+			if cb_res {
 				return 1
 			}
 		}
