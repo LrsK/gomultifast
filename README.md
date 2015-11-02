@@ -47,11 +47,11 @@ func main() {
 }
 
 // Callback function to run against matches
-func match_handler(matchp gomultifast.Match, param string) int {
+func match_handler(matchp gomultifast.Match, matchedLine string, param string) bool {
         for _, m := range matchp.Patterns {
                 // Print search hit
-                fmt.Printf("%s,%s\n", m.Ident, param)
+                fmt.Printf("%s,%s\n", m.Ident, matchedLine)
         }
-        return 0
+        return false
 }
 ```
